@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Resultado <%= operacion %></title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+
+  <body class="bg-gray-50 font-sans">
+    <div class="container mx-auto px-4 py-8 max-w-4xl">
+      <div class="text-center mb-12">
+        <h1 class="text-4xl font-bold text-gray-800 mb-2">Resultado del <%= operacion %></h1>
+        <a href="/" class="text-blue-600 hover:text-blue-800 inline-flex items-center">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-5 w-5 mr-1"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M9.707 14.707a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 1.414L7.414 9H15a1 1 0 110 2H7.414l2.293 2.293a1 1 0 010 1.414z"
+              clip-rule="evenodd"
+            />
+          </svg>
+          Volver al inicio
+        </a>
+      </div>
+
+      <div class="bg-white rounded-xl shadow-lg p-6 mb-8 border border-gray-200">
+        <h2 class="text-2xl font-semibold text-gray-800 mb-4 pb-2 border-b border-gray-200">
+          Contenido
+        </h2>
+
+        <% if (locals.textoOriginal) { %>
+        <div class="mb-6">
+          <h3 class="text-sm font-semibold text-gray-500 uppercase mb-2">Texto Original</h3>
+          <div
+            class="p-4 bg-gray-50 rounded-lg font-mono text-gray-700 border border-gray-200 break-words"
+          >
+            <%= textoOriginal %>
+          </div>
+        </div>
+        <% } %>
+
+        <div class="mb-6">
+          <h3 class="text-sm font-semibold text-gray-500 uppercase mb-2">Texto Cifrado</h3>
+          <div
+            class="p-4 bg-blue-50 rounded-lg font-mono text-blue-800 border border-blue-200 break-words"
+          >
+            <%= textoCifrado %>
+          </div>
+        </div>
+
+        <% if (locals.textoDescifrado) { %>
+        <div class="mb-6">
+          <h3 class="text-sm font-semibold text-gray-500 uppercase mb-2">Texto Descifrado</h3>
+          <div
+            class="p-4 bg-green-50 rounded-lg font-mono text-green-800 border border-green-200 break-words"
+          >
+            <%= textoDescifrado %>
+          </div>
+        </div>
+        <% } %>
+      </div>
+
+      <div class="bg-white rounded-xl shadow-lg p-6 mb-8 border border-gray-200">
+        <h2 class="text-2xl font-semibold text-gray-800 mb-4 pb-2 border-b border-gray-200">
+          Configuración
+        </h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="p-3 bg-gray-50 rounded-lg">
+            <h3 class="text-sm font-semibold text-gray-500 uppercase mb-2">Parámetros básicos</h3>
+            <dl class="space-y-2">
+              <div>
+                <dt class="text-gray-600">Bloques</dt>
+                <dd class="font-medium text-gray-800"><%= detalles.numBloques %></dd>
+              </div>
+              <div>
+                <dt class="text-gray-600">Rondas</dt>
+                <dd class="font-medium text-gray-800"><%= detalles.numRondas %></dd>
+              </div>
+              <div>
+                <dt class="text-gray-600">Longitud de bloque</dt>
+                <dd class="font-medium text-gray-800"><%= detalles.longitudBloque %></dd>
+              </div>
+            </dl>
+          </div>
+          <% if (locals.detalles.vectorInicializacion || locals.detalles.claveDescifrado) { %>
+          <div class="p-3 bg-gray-50 rounded-lg">
+            <h3 class="text-sm font-semibold text-gray-500 uppercase mb-2">Seguridad</h3>
+            <dl class="space-y-2">
+              <% if (locals.detalles.vectorInicializacion) { %>
+              <div>
+                <dt class="text-gray-600">IV</dt>
+                <dd class="font-mono text-blue-600 break-words">
+                  <%= detalles.vectorInicializacion %>
+                </dd>
+              </div>
+              <% } %> <% if (locals.detalles.claveDescifrado) { %>
+              <div>
+                <dt class="text-gray-600">Clave</dt>
+                <dd class="font-mono text-blue-600 break-words"><%= detalles.claveDescifrado %></dd>
+              </div>
+              <% } %>
+            </dl>
+          </div>
+          <% } %>
+        </div>
+      </div>
+
+      <% if (locals.detalles.lcgParams && locals.detalles.lcgSample) { %>
+      <div class="bg-white rounded-xl shadow-lg p-6 mb-8 border border-gray-200">
+        <h2 class="text-2xl font-semibold text-gray-800 mb-4 pb-2 border-b border-gray-200">
+          Generador LCG
+        </h2>
+
+        <div class="mb-6 grid grid-cols-2 gap-4">
+          <div class="p-3 bg-purple-50 rounded-lg">
+            <h3 class="text-sm font-semibold text-purple-600 uppercase mb-2">Parámetros</h3>
+            <dl class="space-y-1">
+              <div>
+                <dt class="text-gray-600">Semilla</dt>
+                <dd class="font-mono text-gray-800"><%= detalles.lcgParams.seed %></dd>
+              </div>
+              <div>
+                <dt class="text-gray-600">Multiplicador (a)</dt>
+                <dd class="font-mono text-gray-800"><%= detalles.lcgParams.a %></dd>
+              </div>
+              <div>
+                <dt class="text-gray-600">Incremento (c)</dt>
+                <dd class="font-mono text-gray-800"><%= detalles.lcgParams.c %></dd>
+              </div>
+              <div>
+                <dt class="text-gray-600">Módulo (m)</dt>
+                <dd class="font-mono text-gray-800"><%= detalles.lcgParams.m %></dd>
+              </div>
+            </dl>
+          </div>
+
+          <div class="p-3 bg-purple-50 rounded-lg">
+            <h3 class="text-sm font-semibold text-purple-600 uppercase mb-2">Muestra inicial</h3>
+            <div class="overflow-x-auto">
+              <table class="w-full">
+                <thead>
+                  <tr class="text-xs text-purple-600 border-b border-purple-200">
+                    <th class="pb-2 px-2 text-left">Iteración</th>
+                    <th class="pb-2 px-2 text-left">Valor (Xi)</th>
+                    <th class="pb-2 px-2 text-left">Decimal (ri)</th>
+                  </tr>
+                </thead>
+                <tbody class="text-sm">
+                  <% detalles.lcgSample.forEach((row)=> { %>
+                  <tr class="border-b border-purple-50 last:border-0">
+                    <td class="py-2 px-2"><%= row.i %></td>
+                    <td class="py-2 px-2 font-mono"><%= row.Xi %></td>
+                    <td class="py-2 px-2"><%= row.ri.toFixed(6) %></td>
+                  </tr>
+                  <% }); %>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <% } %>
+
+      <div class="bg-white rounded-xl shadow-lg p-6 mb-8 border border-gray-200">
+        <h2 class="text-2xl font-semibold text-gray-800 mb-4 pb-2 border-b border-gray-200">
+          Procesamiento por Bloques
+        </h2>
+
+        <div class="grid gap-4 md:grid-cols-2">
+          <% bloques.forEach((bloque, index)=> { %>
+          <div class="p-4 bg-gray-50 rounded-lg border border-gray-200">
+            <div class="flex items-center mb-3">
+              <div
+                class="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center mr-3"
+              >
+                <%= index + 1 %>
+              </div>
+              <h3 class="font-semibold text-gray-700">Bloque <%= index + 1 %></h3>
+            </div>
+
+            <div class="space-y-2 text-sm">
+              <% if (operacion==='cifrado' ) { %>
+              <div class="flex justify-between items-center">
+                <span class="text-gray-500">Entrada:</span>
+                <span class="font-mono text-gray-700"> <%= bloque.original %> </span>
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="text-gray-500">Salida:</span>
+                <span class="font-mono text-blue-600"> <%= bloque.cifrado %> </span>
+              </div>
+              <% } else { %>
+              <div class="flex justify-between items-center">
+                <span class="text-gray-500">Entrada:</span>
+                <span class="font-mono text-gray-700"> <%= bloque.cifrado %> </span>
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="text-gray-500">Salida:</span>
+                <span class="font-mono text-green-600"> <%= bloque.descifrado %> </span>
+              </div>
+              <% } %>
+            </div>
+          </div>
+          <% }); %>
+        </div>
+      </div>
+
+      <% if (pasos && pasos.length > 0) { %>
+      <div class="bg-white rounded-xl shadow-lg p-6 mb-8 border border-gray-200">
+        <h2 class="text-2xl font-semibold text-gray-800 mb-4 pb-2 border-b border-gray-200">
+          Detalle de Rondas
+        </h2>
+
+        <div class="mb-4">
+          <ul class="flex flex-wrap border-b border-gray-200">
+            <% pasos.forEach((bloquePasos, bloqueIndex)=> { %>
+            <li class="mr-2" role="presentation">
+              <button
+                class="tab-btn inline-block p-3 border-b-2 rounded-t-lg"
+                id="bloque-<%= bloqueIndex %>-tab"
+                data-target="bloque-<%= bloqueIndex %>-content"
+                role="tab"
+                aria-controls="bloque-<%= bloqueIndex %>"
+                aria-selected="<%= bloqueIndex === 0 ? 'true' : 'false' %>"
+              >
+                Bloque <%= bloqueIndex + 1 %>
+              </button>
+            </li>
+            <% }); %>
+          </ul>
+        </div>
+
+        <div class="tab-content">
+          <% pasos.forEach((bloquePasos, bloqueIndex)=> { %>
+          <div
+            id="bloque-<%= bloqueIndex %>-content"
+            class="tab-pane"
+            role="tabpanel"
+            aria-labelledby="bloque-<%= bloqueIndex %>-tab"
+            class="<%= bloqueIndex === 0 ? 'block' : 'hidden' %>"
+          >
+            <% bloquePasos.steps.forEach((paso)=> { %>
+            <div class="mb-4 last:mb-0 pb-4 last:pb-0 border-b border-gray-100 last:border-0">
+              <div class="flex items-center mb-2">
+                <div
+                  class="w-6 h-6 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mr-3"
+                >
+                  <%= paso.round %>
+                </div>
+                <h4 class="font-medium text-gray-700">Ronda <%= paso.round %></h4>
+              </div>
+
+              <div class="pl-9">
+                <% if (operacion==='cifrado' ) { %>
+                <div class="text-sm space-y-1">
+                  <div class="flex items-center justify-between">
+                    <span class="text-gray-500">Valor Inicial:</span>
+                    <span class="font-mono text-gray-700"> <%= paso.beforeSub %> </span>
+                  </div>
+                  <div class="flex items-center justify-between">
+                    <span class="text-gray-500">Sustitución:</span>
+                    <span class="font-mono text-gray-700"> <%= paso.afterSub %> </span>
+                  </div>
+                  <div class="mb-2">
+                    <div class="text-gray-500 text-xs mb-1">Operación César:</div>
+                    <ul class="list-disc pl-4 space-y-1 text-xs text-gray-600">
+                      <% paso.substitutionOperations.forEach((op, index) => { %>
+                      <li class="break-all">
+                        <%= op %>
+                        <span class="font-mono text-gray-700">(<%= paso.afterSub[index] %>)</span>
+                      </li>
+                      <% }); %>
+                    </ul>
+                  </div>
+                  <div class="flex items-center justify-between">
+                    <span class="text-gray-500">Transposición</span>
+                  </div>
+                </div>
+                <% } else { %>
+                <div class="text-sm space-y-1">
+                  <div class="flex items-center justify-between">
+                    <span class="text-gray-500">Transposición:</span>
+                    <span class="font-mono text-green-600"> <%= paso.afterTransInv %> </span>
+                  </div>
+
+                  <div class="flex items-center justify-between">
+                    <span class="text-gray-500">Sustitución</span>
+                  </div>
+                  <div class="mb-2">
+                    <div class="text-gray-500 text-xs mb-1">Operación Inversa:</div>
+                    <ul class="list-disc pl-4 space-y-1 text-xs text-gray-600">
+                      <% paso.substitutionOperations.forEach((op, index) => { %>
+                      <li class="break-all">
+                        <%= op %>
+                        <span class="font-mono text-gray-700">(<%= paso.result[index] %>)</span>
+                      </li>
+                      <% }); %>
+                    </ul>
+                  </div>
+                </div>
+                <% } %>
+                <div class="mt-2 text-sm flex items-center justify-between">
+                  <span class="text-gray-500">Resultado:</span>
+                  <span class="font-mono font-medium text-purple-600"> <%= paso.result %> </span>
+                </div>
+              </div>
+            </div>
+            <% }); %>
+          </div>
+          <% }); %>
+        </div>
+      </div>
+      <% } %>
+    </div>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        const tabButtons = document.querySelectorAll('.tab-btn');
+
+        if (tabButtons.length > 0) {
+          tabButtons[0].classList.add('border-blue-600', 'text-blue-600');
+        }
+
+        tabButtons.forEach((button) => {
+          button.addEventListener('click', function () {
+            document.querySelectorAll('.tab-pane').forEach((pane) => {
+              pane.style.display = 'none';
+            });
+
+            tabButtons.forEach((btn) => {
+              btn.classList.remove('border-blue-600', 'text-blue-600');
+              btn.classList.add(
+                'border-transparent',
+                'text-gray-500',
+                'hover:text-gray-700',
+                'hover:border-gray-300',
+              );
+              btn.setAttribute('aria-selected', 'false');
+            });
+
+            const targetId = this.getAttribute('data-target');
+            document.getElementById(targetId).style.display = 'block';
+
+            this.classList.remove(
+              'border-transparent',
+              'text-gray-500',
+              'hover:text-gray-700',
+              'hover:border-gray-300',
+            );
+            this.classList.add('border-blue-600', 'text-blue-600');
+            this.setAttribute('aria-selected', 'true');
+          });
+        });
+      });
+    </script>
+  </body>
+</html>
