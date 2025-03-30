@@ -20,10 +20,15 @@ class BlockCipher {
 
     const { niArray } = this.calculateLCGTable(seed, a, c, m, iterations, 0, 1);
 
-    const iv = niArray.slice(0, this.blockSize).map((val) => Math.floor(val * 26));
+    const iv = niArray
+      .slice(0, this.blockSize)
+      .map((val) => Math.floor(val * 26));
     const keys = [];
     for (let i = 0; i < this.numRounds; i++) {
-      const key = niArray.slice(this.blockSize + i * 8, this.blockSize + (i + 1) * 8);
+      const key = niArray.slice(
+        this.blockSize + i * 8,
+        this.blockSize + (i + 1) * 8,
+      );
       keys.push(key);
     }
 
@@ -55,7 +60,9 @@ class BlockCipher {
         const ivShift = iv[i % iv.length];
         const newIndex = (index + shift + ivShift + round) % 26;
 
-        operations.push(`(${index} + ${shift} + ${ivShift} + ${round}) % 26 = ${newIndex}`);
+        operations.push(
+          `(${index} + ${shift} + ${ivShift} + ${round}) % 26 = ${newIndex}`,
+        );
         result += this.alphabet[newIndex];
       } else {
         operations.push(`${char} (No modificado)`);
@@ -125,7 +132,12 @@ class BlockCipher {
       console.log('iv:', iv);
       console.log('bloque', currentBlock);
 
-      const substitutionResult = this.substitute(currentBlock, keys[round], round, iv);
+      const substitutionResult = this.substitute(
+        currentBlock,
+        keys[round],
+        round,
+        iv,
+      );
       currentBlock = substitutionResult.result;
 
       const afterSub = currentBlock;
@@ -155,11 +167,26 @@ class BlockCipher {
     for (let round = this.numRounds - 1; round >= 0; round--) {
       const beforeTransInv = currentBlock;
 
+      console.log(' ');
+      console.log('bloque', currentBlock);
       currentBlock = this.transposeInverse(currentBlock);
 
       const afterTransInv = currentBlock;
 
-      const substitutionResult = this.substituteInverse(currentBlock, keys[round], round, iv);
+      console.log('Ronda', round + 1);
+      console.log(
+        'keys:',
+        keys[round].map((v) => v.toFixed(4)),
+      );
+      console.log(' ');
+      console.log('iv:', iv);
+
+      const substitutionResult = this.substituteInverse(
+        currentBlock,
+        keys[round],
+        round,
+        iv,
+      );
       currentBlock = substitutionResult.result;
 
       steps.push({
@@ -219,8 +246,14 @@ class BlockCipher {
       blocks.push(cleanText.substring(i, i + this.blockSize));
     }
 
-    if (blocks.length > 0 && blocks[blocks.length - 1].length < this.blockSize) {
-      blocks[blocks.length - 1] = blocks[blocks.length - 1].padEnd(this.blockSize, 'x');
+    if (
+      blocks.length > 0 &&
+      blocks[blocks.length - 1].length < this.blockSize
+    ) {
+      blocks[blocks.length - 1] = blocks[blocks.length - 1].padEnd(
+        this.blockSize,
+        'x',
+      );
     }
 
     const encryptedResults = [];

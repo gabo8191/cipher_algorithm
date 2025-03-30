@@ -443,9 +443,9 @@ calculateLCGTable(seed, a, c, m, iterations, minValue, maxValue) {
 
 ## Gráfico de funcionamiento
 
-El siguiente diagrama muestra el flujo general del algoritmo de cifrado por bloques:
+El siguiente diagrama muestra el flujo general del algoritmo de cifrado por bloques, para la cadena de texto "hola":
 
-![Diagrama de Cifrado por Bloques](diagrams/Diagrama_hola.png)
+![Diagrama de Cifrado y Descifrado por Bloques](diagrams/cipher_decipher.png)
 
-En caso de que no se visualice la imagen, se puede encontrar en el siguiente enlace: <https://excalidraw.com/#json=PgCZophvxXvK6GxNmJY25,Ysnk8K93YjbeyJX-BOCNtQ>
-También puede usar el archivo [.excalidraw adjunto](diagrams/Bloques_hola.excalidraw).
+En caso de que no se visualice la imagen, se puede encontrar en el siguiente enlace: <https://excalidraw.com/#json=sotCNtd18RjQI_zCT_F2B,O02fldVNZsx4cevCxYmkVA>
+También puede usar el archivo [.excalidraw adjunto](diagrams/cipher_decipher.excalidraw).
