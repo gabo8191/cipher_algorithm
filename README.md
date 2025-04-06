@@ -1,3 +1,44 @@
+## 🚀 Cómo ejecutar este proyecto
+
+Sigue estos pasos para clonar y ejecutar correctamente el servidor Express en tu entorno local:
+
+### 1. Clonar el repositorio
+
+```bash
+git clone https://github.com/tu-usuario/tu-repositorio.git
+cd tu-repositorio
+```
+
+### 2. Instalar las dependencias
+
+Asegúrate de tener instalado [Node.js](https://nodejs.org/). Luego, ejecuta:
+
+```bash
+npm install
+```
+
+### 4. Ejecutar el servidor en desarrollo
+
+```bash
+npm run dev
+```
+
+> ⚙️ Este comando suele usar `nodemon` para recargar automáticamente el servidor en cambios.
+
+### 5. O ejecutar en modo producción
+
+```bash
+npm start
+```
+
+### 6. Acceder a la aplicación
+
+Una vez que el servidor esté corriendo, accede a través de tu navegador:
+
+```
+http://localhost:3000
+```
+
 # Documentación del Algoritmo de Cifrado por Bloques
 
 ## Descripción General
